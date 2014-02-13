@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.conf import settings
-from django.utils import translation
+from django.utils import translation, encoding
 from parler.models import TranslationDoesNotExist
 from parler import appsettings
 from .utils import AppTestCase
@@ -190,3 +191,17 @@ class ModelAttributeTests(AppTestCase):
 
         # Now save. This should not raise errors
         x.save()
+
+    def test_repr_unicode(self):
+        x = SimpleModel()
+        x.set_current_language('en')
+        x.tr_title = "At Québec"
+        x.set_current_language('fr')
+        x.tr_title = "À Québec"
+        x.save()
+
+        # str() always returns text
+        self.assertEqual("À Québec", "{0}".format(x))
+
+        # repr is always 'str', so text in PY3 and bytes in PY2
+        self.assertEqual(encoding.smart_str("<SimpleModel: À Québec>"), repr(x))

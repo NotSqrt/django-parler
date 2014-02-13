@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from parler.fields import TranslatedField
 from parler.models import TranslatableModel, TranslatedFields, TranslatedFieldsModel
 
@@ -11,6 +14,7 @@ class ManualModelTranslations(TranslatedFieldsModel):
     tr_title = models.CharField(max_length=200)
 
 
+@python_2_unicode_compatible
 class SimpleModel(TranslatableModel):
     shared = models.CharField(max_length=200, default='')
 
@@ -18,10 +22,11 @@ class SimpleModel(TranslatableModel):
         tr_title = models.CharField(max_length=200)
     )
 
-    def __unicode__(self):
-        return self.tr_title
+    def __str__(self):
+        return "{0}".format(self.tr_title)
 
 
+@python_2_unicode_compatible
 class AnyLanguageModel(TranslatableModel):
     shared = models.CharField(max_length=200, default='')
     tr_title = TranslatedField(any_language=True)
@@ -30,11 +35,11 @@ class AnyLanguageModel(TranslatableModel):
         tr_title = models.CharField(max_length=200)
     )
 
-    def __unicode__(self):
-        return self.tr_title
+    def __str__(self):
+        return "{0}".format(self.tr_title)
 
 
-
+@python_2_unicode_compatible
 class EmptyModel(TranslatableModel):
     shared = models.CharField(max_length=200, default='')
 
@@ -42,5 +47,5 @@ class EmptyModel(TranslatableModel):
     # This is useful when the model is a parent object for inlines. The parent model defines the language tabs.
     translations = TranslatedFields()
 
-    def __unicode__(self):
-        return self.shared
+    def __str__(self):
+        return "{0}".format(self.shared)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db.models import Manager
 from django.test import TestCase
 from .utils import AppTestCase
